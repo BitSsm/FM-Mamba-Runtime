@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "groups": [
+    {
+      "id": "vim",
+      "row": 1,
+      "engine": "reference",
+      "variant": "vision_mamba",
+      "structure": "Vision Mamba",
+      "condition": null,
+      "parameters": 24719632,
+      "training_config": "configs/experiments/vim.json"
+    },
+    {
+      "id": "vmamba",
+      "row": 2,
+      "engine": "reference",
+      "variant": "vmamba",
+      "structure": "VMamba",
+      "condition": null,
+      "parameters": 24365008,
+      "training_config": "configs/experiments/vmamba.json"
+    },
+    {
+      "id": "2dmamba",
+      "row": 3,
+      "engine": "reference",
+      "variant": "two_d_mamba",
+      "structure": "2DMamba",
+      "condition": null,
+      "parameters": 24365008,
+      "training_config": "configs/experiments/2dmamba.json"
+    },
+    {
+      "id": "m2d_2m2a",
+      "row": 4,
+      "engine": "reference",
+      "variant": "mamba2d",
+      "structure": "$2M_{\\rm 2D}2A_{\\rm T}$",
+      "condition": null,
+      "parameters": 24638056,
+      "training_config": "configs/experiments/m2d_2m2a.json"
+    },
+    {
+      "id": "m2d_4m0a",
+      "row": 5,
+      "engine": "reference",
+      "variant": "mamba2d",
+      "structure": "$2M_{\\rm 2D}2A_{\\rm 2D}$",
+      "condition": null,
+      "parameters": 22062568,
+      "training_config": "configs/experiments/m2d_4m0a.json"
+    },
+    {
+      "id": "fm_2m2a_c1",
+      "row": 6,
+      "engine": "reference",
+      "variant": "fm_c1_local",
+      "structure": "$2M_{\\rm FM}2A_{\\rm T}$",
+      "condition": 1,
+      "parameters": 24610408,
+      "training_config": "configs/experiments/fm_2m2a_c1.json"
+    },
+    {
+      "id": "fm_2m2a_c2",
+      "row": 7,
+      "engine": "reference",
+      "variant": "fm_c2_local",
+      "structure": "$2M_{\\rm FM}2A_{\\rm T}$",
+      "condition": 2,
+      "parameters": 24610408,
+      "training_config": "configs/experiments/fm_2m2a_c2.json"
+    },
+    {
+      "id": "fm_2m2a_c3",
+      "row": 8,
+      "engine": "reference",
+      "variant": "fm_c3_local",
+      "structure": "$2M_{\\rm FM}2A_{\\rm T}$",
+      "condition": 3,
+      "parameters": 24610408,
+      "training_config": "configs/experiments/fm_2m2a_c3.json"
+    },
+    {
+      "id": "fm_4m0a_c1",
+      "row": 9,
+      "engine": "reference",
+      "variant": "fm_c1_local",
+      "structure": "$2M_{\\rm FM}2A_{\\rm FM}$",
+      "condition": 1,
+      "parameters": 21822952,
+      "training_config": "configs/experiments/fm_4m0a_c1.json"
+    },
+    {
+      "id": "fm_4m0a_c2",
+      "row": 10,
+      "engine": "reference",
+      "variant": "fm_c2_local",
+      "structure": "$2M_{\\rm FM}2A_{\\rm FM}$",
+      "condition": 2,
+      "parameters": 21822952,
+      "training_config": "configs/experiments/fm_4m0a_c2.json"
+    },
+    {
+      "id": "fm_4m0a_c3",
+      "row": 11,
+      "engine": "reference",
+      "variant": "fm_c3_local",
+      "structure": "$2M_{\\rm FM}2A_{\\rm FM}$",
+      "condition": 3,
+      "parameters": 21822952,
+      "training_config": "configs/experiments/fm_4m0a_c3.json"
+    },
+    {
+      "id": "fm_pcd_c1",
+      "row": 12,
+      "engine": "pcd",
+      "variant": "fm_c1_local",
+      "structure": "$2M_{\\rm FM}2A_{\\rm FM}-{\\rm PCD}$",
+      "condition": 1,
+      "parameters": 21822952,
+      "training_config": "configs/experiments/fm_pcd_c1.json"
+    },
+    {
+      "id": "fm_pcd_c2",
+      "row": 13,
+      "engine": "pcd",
+      "variant": "fm_c2_local",
+      "structure": "$2M_{\\rm FM}2A_{\\rm FM}-{\\rm PCD}$",
+      "condition": 2,
+      "parameters": 21822952,
+      "training_config": "configs/experiments/fm_pcd_c2.json"
+    },
+    {
+      "id": "fm_pcd_c3",
+      "row": 14,
+      "engine": "pcd",
+      "variant": "fm_c3_local",
+      "structure": "$2M_{\\rm FM}2A_{\\rm FM}-{\\rm PCD}$",
+      "condition": 3,
+      "parameters": 21822952,
+      "training_config": "configs/experiments/fm_pcd_c3.json"
+    }
+  ]
+}

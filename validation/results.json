@@ -1,0 +1,772 @@
+{
+  "environment": {
+    "os": "Windows x64",
+    "python": "3.11.16",
+    "torch": "2.10.0+cu128",
+    "gpu": "RTX 5090 D",
+    "compute_capability": "12.0"
+  },
+  "short_run": {
+    "train_images": 99,
+    "val_images": 16,
+    "batches": [
+      64,
+      35
+    ],
+    "jit_compilation": "rejected by validation guard",
+    "compiler_PATH": "removed"
+  },
+  "distribution_audit": {
+    "public_files": 87,
+    "native_kernels": 14,
+    "compiled_python_modules": 22,
+    "paper_files": 0,
+    "hidden_source_files": 0,
+    "wheel_bytes": 17569370,
+    "wheel_sha256": "380f1346466fa1847f73592e731061662a0ef6066603d8dceca84d3c848a0a6b"
+  },
+  "groups": [
+    {
+      "group": "vim",
+      "parameters": 24719632,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 5740,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "vim",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 4.6566128730773926e-09,
+          "bitwise_equal": false,
+          "tensors": 374
+        },
+        "state": {
+          "max_absolute_difference": 1.862645149230957e-09,
+          "bitwise_equal": false,
+          "tensors": 374
+        }
+      },
+      "forward_smoke": {
+        "group": "vim",
+        "parameters": 24719632,
+        "finite_output": true,
+        "graph_checked": false
+      }
+    },
+    {
+      "group": "vmamba",
+      "parameters": 24365008,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 5665,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "vmamba",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 9.313225746154785e-09,
+          "bitwise_equal": false,
+          "tensors": 338
+        },
+        "state": {
+          "max_absolute_difference": 3.725290298461914e-09,
+          "bitwise_equal": false,
+          "tensors": 338
+        }
+      },
+      "forward_smoke": {
+        "group": "vmamba",
+        "parameters": 24365008,
+        "finite_output": true,
+        "graph_checked": false
+      }
+    },
+    {
+      "group": "2dmamba",
+      "parameters": 24365008,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 5665,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "2dmamba",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 1.1175870895385742e-08,
+          "bitwise_equal": false,
+          "tensors": 338
+        },
+        "state": {
+          "max_absolute_difference": 1.862645149230957e-09,
+          "bitwise_equal": false,
+          "tensors": 338
+        }
+      },
+      "forward_smoke": {
+        "group": "2dmamba",
+        "parameters": 24365008,
+        "finite_output": true,
+        "graph_checked": false
+      }
+    },
+    {
+      "group": "m2d_2m2a",
+      "parameters": 24638056,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 8235,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "m2d_2m2a",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 404
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 404
+        }
+      },
+      "forward_smoke": {
+        "group": "m2d_2m2a",
+        "parameters": 24638056,
+        "finite_output": true,
+        "graph_checked": false
+      }
+    },
+    {
+      "group": "m2d_4m0a",
+      "parameters": 22062568,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 7535,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "m2d_4m0a",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 488
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 488
+        }
+      },
+      "forward_smoke": {
+        "group": "m2d_4m0a",
+        "parameters": 22062568,
+        "finite_output": true,
+        "graph_checked": false
+      }
+    },
+    {
+      "group": "fm_2m2a_c1",
+      "parameters": 24610408,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 8055,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "fm_2m2a_c1",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 392
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 410
+        }
+      },
+      "forward_smoke": {
+        "group": "fm_2m2a_c1",
+        "parameters": 24610408,
+        "finite_output": true,
+        "graph_checked": false
+      }
+    },
+    {
+      "group": "fm_2m2a_c2",
+      "parameters": 24610408,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 8055,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "fm_2m2a_c2",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 392
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 410
+        }
+      },
+      "forward_smoke": {
+        "group": "fm_2m2a_c2",
+        "parameters": 24610408,
+        "finite_output": true,
+        "graph_checked": false
+      }
+    },
+    {
+      "group": "fm_2m2a_c3",
+      "parameters": 24610408,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 8115,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "fm_2m2a_c3",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 392
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 410
+        }
+      },
+      "forward_smoke": {
+        "group": "fm_2m2a_c3",
+        "parameters": 24610408,
+        "finite_output": true,
+        "graph_checked": false
+      }
+    },
+    {
+      "group": "fm_4m0a_c1",
+      "parameters": 21822952,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 6995,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "fm_4m0a_c1",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 452
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 506
+        }
+      },
+      "forward_smoke": {
+        "group": "fm_4m0a_c1",
+        "parameters": 21822952,
+        "finite_output": true,
+        "graph_checked": false
+      }
+    },
+    {
+      "group": "fm_4m0a_c2",
+      "parameters": 21822952,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 6995,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "fm_4m0a_c2",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 452
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 506
+        }
+      },
+      "forward_smoke": {
+        "group": "fm_4m0a_c2",
+        "parameters": 21822952,
+        "finite_output": true,
+        "graph_checked": false
+      }
+    },
+    {
+      "group": "fm_4m0a_c3",
+      "parameters": 21822952,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 7175,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "fm_4m0a_c3",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 452
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 506
+        }
+      },
+      "forward_smoke": {
+        "group": "fm_4m0a_c3",
+        "parameters": 21822952,
+        "finite_output": true,
+        "graph_checked": false
+      }
+    },
+    {
+      "group": "fm_pcd_c1",
+      "parameters": 21822952,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 3195,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "fm_pcd_c1",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 452
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 506
+        }
+      },
+      "forward_smoke": {
+        "group": "fm_pcd_c1",
+        "parameters": 21822952,
+        "finite_output": true,
+        "graph_checked": true
+      },
+      "first_batch_graph_calls": 18,
+      "training_graph_numerical_comparison": {
+        "group": "fm_pcd_c1",
+        "training_graph": true,
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 452
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 506
+        }
+      },
+      "tail_graph_release": {
+        "modules": 18,
+        "actual_batch_size": 35,
+        "state_policy": "save_all",
+        "recompute": false,
+        "training_batch_completed": true
+      }
+    },
+    {
+      "group": "fm_pcd_c2",
+      "parameters": 21822952,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 3195,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "fm_pcd_c2",
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 452
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 506
+        }
+      },
+      "forward_smoke": {
+        "group": "fm_pcd_c2",
+        "parameters": 21822952,
+        "finite_output": true,
+        "graph_checked": true
+      },
+      "first_batch_graph_calls": 18,
+      "training_graph_numerical_comparison": {
+        "group": "fm_pcd_c2",
+        "training_graph": true,
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 452
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 506
+        }
+      },
+      "tail_graph_release": {
+        "modules": 18,
+        "actual_batch_size": 35,
+        "state_policy": "save_all",
+        "recompute": false,
+        "training_batch_completed": true
+      }
+    },
+    {
+      "group": "fm_pcd_c3",
+      "parameters": 21822952,
+      "epochs_completed": 1,
+      "training_steps": 2,
+      "training_samples": 99,
+      "validation_samples": 16,
+      "resume_step": 1,
+      "cuda_kernels_in_trace": 3375,
+      "training_log_rows": 2,
+      "numerical_comparison": {
+        "group": "fm_pcd_c3",
+        "training_graph": false,
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 452
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 506
+        }
+      },
+      "forward_smoke": {
+        "group": "fm_pcd_c3",
+        "parameters": 21822952,
+        "finite_output": true,
+        "graph_checked": true
+      },
+      "first_batch_graph_calls": 18,
+      "training_graph_numerical_comparison": {
+        "group": "fm_pcd_c3",
+        "training_graph": true,
+        "passed": true,
+        "tolerance": {
+          "atol": 2e-05,
+          "rtol": 0.0002
+        },
+        "logits": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 1
+        },
+        "grads": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 452
+        },
+        "state": {
+          "max_absolute_difference": 0.0,
+          "bitwise_equal": true,
+          "tensors": 506
+        }
+      },
+      "tail_graph_release": {
+        "modules": 18,
+        "actual_batch_size": 35,
+        "state_policy": "save_all",
+        "recompute": false,
+        "training_batch_completed": true
+      }
+    }
+  ]
+}

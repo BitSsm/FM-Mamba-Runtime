@@ -1,0 +1,30 @@
+# Revised 2026-10-16: parallel M/M, then two VMamba-T serial M stages.
+# Use with comparison_support.build_variant; the COCO runner installs its 80-class head.
+# Training settings come from the experiment JSON, not this carrier configuration.
+model:
+  class_path: models.mamba2d_classifier.Mamba2DClassifier
+  init_args:
+    backbone:
+      class_path: models.mamba2d.Mamba2DBackbone
+      init_args:
+        in_channels: 3
+        channel_last: true
+        n_blocks: [3, 3, 9, 3]
+        ds_stages: [mf_stem, mf_2, mf_2, mf_2]
+        embed_dim: [64, 128, 320, 512]
+        token_mixer: [2D_local, 2D_local, 2D_serial, 2D_serial]
+        drop_path_rate: 0.175
+        res_scale_init_values: [1.0, 1.0, 1.0, 1.0]
+        inter_flip: true
+        recomp: partial
+    n_classes: 1000
+    head:
+      class_path: models.utils.MlpHead
+      init_args:
+        dim: 512
+        n_classes: 1000
+        head_dropout: 0.15
+    cutmix: true
+    lr: 0.004
+    weight_decay: 0.05
+    warmup_pct: 0.05

@@ -1,0 +1,83 @@
+{
+  "experiment": "coco_holdout11_40epochs_single_seed",
+  "task": "coco_multilabel",
+  "model_config": "configs/M2D-T-4M0A-backbone.yaml",
+  "seed": 20261010,
+  "data_seed": 42042,
+  "epochs": 40,
+  "batch_size": 64,
+  "resolution": 224,
+  "lr": 0.0001,
+  "min_lr": 1e-06,
+  "warmup_epochs": 2,
+  "weight_decay": 0.05,
+  "grad_clip_norm": 1.0,
+  "training_precision": "fp32",
+  "fm_recompute": true,
+  "stability_margin": 0.1,
+  "cpu_threads": 8,
+  "loader_workers": 4,
+  "telemetry_interval_s": 0.5,
+  "checkpoint_every": 500,
+  "progress_every": 20,
+  "gradient_probe_every": 500,
+  "augmentation": "full_image_bicubic224_horizontal_flip0.5_brightness_contrast_saturation0.2",
+  "inference": {
+    "cases": [
+      [
+        224,
+        1
+      ],
+      [
+        224,
+        8
+      ],
+      [
+        224,
+        64
+      ],
+      [
+        384,
+        1
+      ]
+    ],
+    "precisions": [
+      "fp32",
+      "bf16"
+    ],
+    "rounds": 3,
+    "warmup": 20,
+    "iterations": 100,
+    "throughput_iterations": 100,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ]
+  },
+  "architecture_version": "hybrid_vmamba_serial_20261016",
+  "external_mixer_scope": "full_mixer",
+  "execution_backends": {
+    "mamba2d": "original",
+    "fm_c1_local": "fused",
+    "fm_c2_local": "fused_c2",
+    "fm_c3_local": "fused"
+  },
+  "pretrained_weights": null,
+  "initialization_policy": "from scratch unless an explicit inference checkpoint is supplied",
+  "test_policy": "Evaluate test only through an explicit evaluate --split test command",
+  "training_controller": "holdout11"
+}

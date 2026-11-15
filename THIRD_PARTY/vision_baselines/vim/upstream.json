@@ -1,0 +1,31 @@
+{
+  "repository": "https://github.com/hustvl/Vim",
+  "commit": "dd0358ad1e42701f22afbefa0717cc8825cf9f45",
+  "files": [
+    "LICENSE.txt",
+    "README.md",
+    "mamba-1p1p1/LICENSE",
+    "mamba-1p1p1/csrc/selective_scan/reverse_scan.cuh",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan.cpp",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan.h",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_bwd_bf16_complex.cu",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_bwd_bf16_real.cu",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_bwd_fp16_complex.cu",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_bwd_fp16_real.cu",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_bwd_fp32_complex.cu",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_bwd_fp32_real.cu",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_bwd_kernel.cuh",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_common.h",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_fwd_bf16.cu",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_fwd_fp16.cu",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_fwd_fp32.cu",
+    "mamba-1p1p1/csrc/selective_scan/selective_scan_fwd_kernel.cuh",
+    "mamba-1p1p1/csrc/selective_scan/static_switch.h",
+    "mamba-1p1p1/csrc/selective_scan/uninitialized_copy.cuh",
+    "mamba-1p1p1/mamba_ssm/modules/mamba_simple.py",
+    "mamba-1p1p1/mamba_ssm/ops/selective_scan_interface.py",
+    "mamba-1p1p1/setup.py",
+    "vim/models_mamba.py",
+    "vim/scripts/pt-vim-t.sh"
+  ]
+}

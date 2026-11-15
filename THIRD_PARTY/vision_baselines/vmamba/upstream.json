@@ -1,0 +1,30 @@
+{
+  "repository": "https://github.com/MzeroMiko/VMamba",
+  "commit": "2ed52ead062a51a64521ed3871d52914bf532876",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "classification/configs/vssm/vmambav2v_tiny_224.yaml",
+    "classification/models/csm_triton.py",
+    "classification/models/csms6s.py",
+    "classification/models/vmamba.py",
+    "kernels/selective_scan/csrc/selective_scan/cub_extra.cuh",
+    "kernels/selective_scan/csrc/selective_scan/cus/selective_scan.cpp",
+    "kernels/selective_scan/csrc/selective_scan/cus/selective_scan_bwd_kernel.cuh",
+    "kernels/selective_scan/csrc/selective_scan/cus/selective_scan_core_bwd.cu",
+    "kernels/selective_scan/csrc/selective_scan/cus/selective_scan_core_fwd.cu",
+    "kernels/selective_scan/csrc/selective_scan/cus/selective_scan_fwd_kernel.cuh",
+    "kernels/selective_scan/csrc/selective_scan/cusoflex/selective_scan_bwd_kernel_oflex.cuh",
+    "kernels/selective_scan/csrc/selective_scan/cusoflex/selective_scan_core_bwd.cu",
+    "kernels/selective_scan/csrc/selective_scan/cusoflex/selective_scan_core_fwd.cu",
+    "kernels/selective_scan/csrc/selective_scan/cusoflex/selective_scan_fwd_kernel_oflex.cuh",
+    "kernels/selective_scan/csrc/selective_scan/cusoflex/selective_scan_oflex.cpp",
+    "kernels/selective_scan/csrc/selective_scan/cusoflex/selective_scan_oflex.h",
+    "kernels/selective_scan/csrc/selective_scan/reverse_scan.cuh",
+    "kernels/selective_scan/csrc/selective_scan/selective_scan.h",
+    "kernels/selective_scan/csrc/selective_scan/selective_scan_common.h",
+    "kernels/selective_scan/csrc/selective_scan/static_switch.h",
+    "kernels/selective_scan/csrc/selective_scan/uninitialized_copy.cuh",
+    "kernels/selective_scan/setup.py"
+  ]
+}

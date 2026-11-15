@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyd
+*.whl
+*.pt
+*.pth
+*.zip
+outputs/
+dist/
+.torch_extensions/

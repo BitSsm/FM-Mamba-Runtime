@@ -1,0 +1,13 @@
+timm
+torch
+einops
+lightning
+torchvision
+torchmetrics
+
+# Logging and lightningCLI
+wandb
+omegaconf
+jsonargparse[signatures]
+setuptools
+
