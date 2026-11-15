@@ -30,3 +30,7 @@ PCD三组另外通过Graph与普通前向输出对比；35张尾批释放Graph�
 完整机器可读检查结果见 [validation/results.json](validation/results.json)。上述记录来自短程流程测试。
 
 发布审计：14个CUDA内核二进制、22个编译后的Python模块；FM核心源码及论文文件数为0。
+
+2026-11-15安装复核：从GitHub重新克隆仓库并下载Release附件，核对wheel的SHA256。新虚拟环境独立安装全部依赖，使用4个DataLoader进程完成PCD工况II的两步训练、断点续训、16张图验证、测速、资源采样和CUDA trace。
+
+逐组14项流程测试使用独立的runtime安装环境，并复用本机已安装的PyTorch依赖目录；上述下载复核使用独立安装的完整依赖环境。

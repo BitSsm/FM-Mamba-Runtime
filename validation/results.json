@@ -768,5 +768,21 @@
         "training_batch_completed": true
       }
     }
-  ]
+  ],
+  "clean_download_verification": {
+    "date": "2026-11-15",
+    "repository": "BitSsm/FM-Mamba-Runtime",
+    "commit": "27c4eceb5e10dd8c908486a3459ae336e3a0267b",
+    "release": "v0.1.0",
+    "wheel_sha256": "380f1346466fa1847f73592e731061662a0ef6066603d8dceca84d3c848a0a6b",
+    "dependencies": "independently installed in a new virtual environment",
+    "group": "fm_pcd_c2",
+    "loader_workers": 4,
+    "train_images": 99,
+    "val_images": 16,
+    "steps": 2,
+    "resume_step": 1,
+    "train_resume_evaluate_benchmark_trace": "passed",
+    "jit_compilation": "rejected by validation guard"
+  }
 }
