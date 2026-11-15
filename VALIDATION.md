@@ -1,36 +1,36 @@
-# 短程验证
+# Short-run validation
 
-环境：Windows x64 / RTX 5090 D / Python 3.11.16 / PyTorch 2.10.0+cu128。
+Environment: Windows x64 / RTX 5090 D / Python 3.11.16 / PyTorch 2.10.0+cu128.
 
-每组随机初始化，使用99张训练图和16张验证图；训练batch为64和35。第一步保存检查点，重启进程后从第二步续训，随后验证、测速并导出资源日志与CUDA trace。验证进程禁止即时编译，并移除编译工具的PATH。
+Each group was randomly initialized and used 99 training images and 16 validation images, with training batches of 64 and 35. A checkpoint was saved after the first step, followed by a process restart and resume at the second step. Evaluation, benchmarking, resource logging, and CUDA trace export then completed. Validation processes rejected JIT compilation and excluded compiler directories from PATH.
 
-数值检查在相同种子、输入和原生内核下，对比封装前的Python实现与二进制实现：前向logit、BCE、全部参数梯度、一次SGD更新后的权重。逐张量检查容差为 atol=2e-5、rtol=2e-4。
+Numerical checks compared the original Python implementation with the binary implementation using identical seeds, inputs, and native kernels. Checks covered forward logits, BCE, all parameter gradients, and weights after one SGD update. Per-tensor tolerances were atol=2e-5 and rtol=2e-4.
 
-|组|训练/续训/评估/测速|logit最大绝对差|梯度最大绝对差|CUDA kernel事件（5次前向）|
+|Group|Train/resume/evaluate/benchmark|Maximum absolute logit difference|Maximum absolute gradient difference|CUDA kernel events (5 forward passes)|
 |---|---|---:|---:|---:|
-|`vim`|通过|0|4.66e-09|5740|
-|`vmamba`|通过|0|9.31e-09|5665|
-|`2dmamba`|通过|0|1.12e-08|5665|
-|`m2d_2m2a`|通过|0|0|8235|
-|`m2d_4m0a`|通过|0|0|7535|
-|`fm_2m2a_c1`|通过|0|0|8055|
-|`fm_2m2a_c2`|通过|0|0|8055|
-|`fm_2m2a_c3`|通过|0|0|8115|
-|`fm_4m0a_c1`|通过|0|0|6995|
-|`fm_4m0a_c2`|通过|0|0|6995|
-|`fm_4m0a_c3`|通过|0|0|7175|
-|`fm_pcd_c1`|通过|0|0|3195|
-|`fm_pcd_c2`|通过|0|0|3195|
-|`fm_pcd_c3`|通过|0|0|3375|
+|`vim`|Passed|0|4.66e-09|5740|
+|`vmamba`|Passed|0|9.31e-09|5665|
+|`2dmamba`|Passed|0|1.12e-08|5665|
+|`m2d_2m2a`|Passed|0|0|8235|
+|`m2d_4m0a`|Passed|0|0|7535|
+|`fm_2m2a_c1`|Passed|0|0|8055|
+|`fm_2m2a_c2`|Passed|0|0|8055|
+|`fm_2m2a_c3`|Passed|0|0|8115|
+|`fm_4m0a_c1`|Passed|0|0|6995|
+|`fm_4m0a_c2`|Passed|0|0|6995|
+|`fm_4m0a_c3`|Passed|0|0|7175|
+|`fm_pcd_c1`|Passed|0|0|3195|
+|`fm_pcd_c2`|Passed|0|0|3195|
+|`fm_pcd_c3`|Passed|0|0|3375|
 
-PCD三组另外通过Graph与普通前向输出对比；35张尾批释放Graph后完成反向及更新，保存全部前向状态，关闭重算。
+All three PCD groups also passed Graph-versus-eager forward-output checks. After Graph release, the final 35-image batch completed backward propagation and a parameter update, with all forward states retained and recomputation disabled.
 
-另外对PCD三组进行Graph训练的源实现/二进制对比，每组实际调用18个Graph模块；输出、损失、全部梯度和一次SGD更新后的权重均逐元素一致。
+Additional source-versus-binary Graph training checks invoked 18 Graph modules per PCD group. Outputs, losses, all gradients, and weights after one SGD update were elementwise identical.
 
-完整机器可读检查结果见 [validation/results.json](validation/results.json)。上述记录来自短程流程测试。
+Complete machine-readable results are available in [validation/results.json](validation/results.json). These records cover the short-run workflow checks.
 
-发布审计：14个CUDA内核二进制、22个编译后的Python模块；FM核心源码及论文文件数为0。
+Distribution audit: 14 CUDA kernel binaries and 22 compiled Python modules; zero FM core source files or manuscript files.
 
-2026-11-15安装复核：从GitHub重新克隆仓库并下载Release附件，核对wheel的SHA256。新虚拟环境独立安装全部依赖，使用4个DataLoader进程完成PCD工况II的两步训练、断点续训、16张图验证、测速、资源采样和CUDA trace。
+Installation verification on 2026-11-15: the repository was cloned again from GitHub, release assets were downloaded, and the wheel SHA256 was verified. A new virtual environment with independently installed dependencies completed PCD condition II training for two steps, checkpoint resume, 16-image validation, benchmarking, resource sampling, and CUDA trace export with four DataLoader workers.
 
-逐组14项流程测试使用独立的runtime安装环境，并复用本机已安装的PyTorch依赖目录；上述下载复核使用独立安装的完整依赖环境。
+The 14-group workflow checks used a separate runtime installation with the existing local PyTorch dependency directory. The subsequent GitHub download verification used a fully independent dependency installation.

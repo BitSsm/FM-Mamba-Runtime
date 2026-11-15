@@ -1,10 +1,10 @@
 # FM-Mamba Runtime
 
-14组 COCO 80类多标签分类实验的运行版本。模型外壳、训练、评估和数据划分代码保存在仓库中；FM扫描、公式计算、调度与Graph管理通过预编译wheel提供。
+Runtime distribution for 14 COCO 80-class multilabel classification experiments. The repository contains readable model wrappers, training, evaluation, and data-split code. FM scans, coefficient calculations, scheduling, and CUDA Graph management are supplied in a precompiled wheel.
 
-## 环境与安装
+## Environment and installation
 
-当前版本：Windows x64、CPython 3.11、PyTorch 2.10.0+cu128、torchvision 0.25.0+cu128、CUDA计算能力12.0。验证硬件为 RTX 5090 D。使用wheel安装，运行时直接加载预编译内核。
+Supported environment: Windows x64, CPython 3.11, PyTorch 2.10.0+cu128, torchvision 0.25.0+cu128, and CUDA compute capability 12.0. Validation hardware: RTX 5090 D. Install the wheel to load precompiled kernels at runtime.
 
 ```powershell
 gh repo clone BitSsm/FM-Mamba-Runtime
@@ -17,25 +17,25 @@ gh release download v0.1.0 --repo BitSsm/FM-Mamba-Runtime --pattern "*.whl" --pa
 .\run.ps1 experiments.py smoke --group fm_pcd_c2
 ```
 
-仓库当前为私有，`gh` 使用有仓库访问权限的账号。wheel版本与校验值随Release提供。
+The repository is private. Authenticate `gh` with an account that has repository access. Wheel versions and checksums are included in each release.
 
-安装后，`.\run.ps1 tools/verify_runtime.py` 检查14组前向；`.\run.ps1 tools/short_check.py --data-root D:/datasets/coco2017` 执行PCD工况II的短程训练、续训、评估和测速。
+After installation, `.\run.ps1 tools/verify_runtime.py` checks forward execution for all 14 groups. `.\run.ps1 tools/short_check.py --data-root D:/datasets/coco2017` runs a short training, resume, evaluation, and benchmark cycle for PCD condition II.
 
-## 实验组
+## Experiment groups
 
-|组名|结构与执行方式|
+|Group IDs|Architecture and execution|
 |---|---|
-|`vim`、`vmamba`、`2dmamba`|前两阶段完整混合模块替换，后两阶段Transformer；状态维数依次为16、1、1|
-|`m2d_2m2a`、`m2d_4m0a`|Mamba2D前两阶段并联外壳，后两阶段分别为Transformer、轻量串联外壳|
-|`fm_2m2a_c1` / `c2` / `c3`|2M_FM 2A_T，通用融合；工况II叠加公式优化|
-|`fm_4m0a_c1` / `c2` / `c3`|2M_FM 2A_FM，同上|
-|`fm_pcd_c1` / `c2` / `c3`|2M_FM 2A_FM，三工况公式优化、形状调度、反向优化、完整状态保存、CUDA Graph及尾批Graph释放|
+|`vim`, `vmamba`, `2dmamba`|Full mixer replacement in the first two stages; Transformer attention in the last two. State dimensions: 16, 1, and 1, respectively.|
+|`m2d_2m2a`, `m2d_4m0a`|Mamba2D with parallel local branches in the first two stages; Transformer attention or lightweight serial wrappers in the last two, respectively.|
+|`fm_2m2a_c1` / `c2` / `c3`|2M_FM 2A_T with generic fusion; condition II also uses its formula optimization.|
+|`fm_4m0a_c1` / `c2` / `c3`|2M_FM 2A_FM with generic fusion; condition II also uses its formula optimization.|
+|`fm_pcd_c1` / `c2` / `c3`|2M_FM 2A_FM with formula optimizations for all three conditions, shape-based scheduling, backward optimizations, full state retention, CUDA Graph, and Graph release before the final partial batch.|
 
-所有FM组采用就地输入，工况III的Δ上限为 `0.9 × ln(5) / 16`。主干深度为 `[3,3,9,3]`，通道为 `[64,128,320,512]`。完整组名与配置见 [configs/groups.json](configs/groups.json)。
+All FM groups use local input. The condition III step-size cap is `0.9 * ln(5) / 16`. Backbone depths are `[3,3,9,3]`, with channel widths `[64,128,320,512]`. Full group IDs and configuration paths are listed in [configs/groups.json](configs/groups.json).
 
-## 数据与训练
+## Data and training
 
-固定划分：94,627张训练图、5,000张验证图、23,657张测试图。图像标签取实例类别并集，包含crowd类别，保留空标签图像。数据目录包含 `train2017`、`val2017`（也支持放在 `images/` 下）及 `annotations/instances_*.json`。
+The fixed split contains 94,627 training, 5,000 validation, and 23,657 test images. Image labels are the union of instance categories, including crowd annotations; images with empty labels are retained. The data directory contains `train2017`, `val2017` (also supported under `images/`), and `annotations/instances_*.json`.
 
 ```powershell
 .\run.ps1 prepare_data.py --data-root D:/datasets/coco2017 --output outputs/coco_index
@@ -45,9 +45,9 @@ gh release download v0.1.0 --repo BitSsm/FM-Mamba-Runtime --pattern "*.whl" --pa
 .\run.ps1 experiments.py train --group fm_pcd_c2 --run outputs/c2 --resume
 ```
 
-默认40轮、batch64、224×224、FP32、AdamW，训练seed为20261010，数据seed为42042。检查点保存权重、优化器、随机数状态和批次游标。`prepare --smoke` 使用99张训练图、16张验证图；`train --max-steps 1` 可检查保存与续训。正式训练可在测试集评估前通过 `extend --epochs 60 --lr 1e-6 --min-lr 1e-7` 追加训练段。
+Defaults: 40 epochs, batch size 64, 224 x 224 inputs, FP32, and AdamW. The training seed is 20261010; the data seed is 42042. Checkpoints store weights, optimizer state, RNG state, and the batch cursor. `prepare --smoke` selects 99 training and 16 validation images; `train --max-steps 1` supports a save-and-resume check. Before test evaluation, extend training with `extend --epochs 60 --lr 1e-6 --min-lr 1e-7`.
 
-## 评估与测速
+## Evaluation and benchmarking
 
 ```powershell
 .\run.ps1 experiments.py evaluate --group fm_pcd_c2 --run outputs/c2 --split val
@@ -55,9 +55,9 @@ gh release download v0.1.0 --repo BitSsm/FM-Mamba-Runtime --pattern "*.whl" --pa
 .\run.ps1 experiments.py benchmark --group fm_pcd_c2 --run outputs/c2 --batch 1 --resolution 224 --trace
 ```
 
-验证mAP用于选择最佳权重；测试评估由 `--split test` 启动。输出包括BCE、mAP、micro/macro F1、precision/recall、逐类指标、逐步训练耗时、资源采样、推理延迟、吞吐及CUDA trace。Graph用于PCD三组。
+Validation mAP selects the best weights. `--split test` starts test evaluation. Outputs include BCE, mAP, micro/macro F1, precision/recall, per-class metrics, per-step training times, resource samples, inference latency, throughput, and CUDA traces. CUDA Graph is enabled for the three PCD groups.
 
-## Python调用与目录
+## Python API and repository layout
 
 ```python
 import torch
@@ -72,4 +72,4 @@ with torch.inference_mode():
     logits = graph.owned(x)
 ```
 
-`engines/` 为可读的模型外壳和训练代码，运行时从安装包加载FM二进制模块。`model_api.py` 提供模型构建、权重加载和Graph接口，`experiments.py` 提供完整流程。两类引擎在不同Python进程中运行。第三方许可与版本记录见 [THIRD_PARTY](THIRD_PARTY)，短程验证记录见 [VALIDATION.md](VALIDATION.md)。
+`engines/` contains readable model wrappers and training code that load FM binary modules from the installed package. `model_api.py` provides model construction, weight loading, and Graph interfaces; `experiments.py` provides the complete workflow. Run the reference and PCD engines in separate Python processes. See [THIRD_PARTY](THIRD_PARTY) for licenses and revision records, and [VALIDATION.md](VALIDATION.md) for short-run validation results.

@@ -1,4 +1,4 @@
-"""Audit pilot outputs and render scientific plots plus a Chinese run report."""
+"""Audit historical pilot outputs and render plots and an English run report."""
 import argparse
 import csv
 import json
@@ -161,51 +161,51 @@ def create_report(root):
         writer = csv.DictWriter(stream, fieldnames=fields)
         writer.writeheader()
         writer.writerows(comparison)
-    lines = ["# Mamba2D / FM-Mamba 七组短程试验", "", "状态：七组完成，日志审计通过。", "",
-        f"本轮使用本机 COCO 2017 的 {config['train_samples']} 张训练图、{config['val_samples']} 张验证图，各组均训练 {config['steps']} 步，batch={config['batch_size']}，输入 {config['resolution']}×{config['resolution']}，FP32。",
-        "这是小样本流程与性能试验。子集按类别覆盖抽取，并非完整 COCO 验证集；以下 mAP 是图像级多标签分类 AP 的均值，不是目标检测框 AP，也不是 ImageNet 准确率。单次短训练不能说明最终精度或显著优劣。", "",
-        "## 对比设置", "",
-        "- 原版 M2D-T 骨干作基线；所有组把最后一层改成 80 类，采用同一 BCEWithLogitsLoss。网络其他层、随机深度和 head dropout 保持配置一致。",
-        "- 全部随机初始化；共有外层权重、步长投影、C 与 D 的初始值经 SHA-256 检查完全一致。相同数据、顺序、训练 seed、AdamW、固定学习率 1e-4、weight decay 0.05、梯度裁剪 1.0；无 EMA、CutMix、梯度累积和学习率调度。",
-        "- FM 单一就地输入对应公式 42；多方向输入对应公式 21。均按草稿标红的一阶输入系数实现，未把积分形式当成另一种输入结构。",
-        "- 令 k=1…16：三工况 A1=A2=-k，A0 分别为 -k、-k²、-2.5k²。FM 的 A 固定；原版的 A 可学习。工况 3 对两方向步长硬截断至 0.99·ln(5)/16，约 0.099584。",
-        "- 单一输入 B0(x) 随位置/输入变化；多方向 B1/B2 是每通道 16 维可学习向量，位置无关。多方向注入为 Δ1Δ2[B1Δ2(x−x上)+B2Δ1(x−x左)]，边界外输入和状态为零，系数均取当前位置。这里忠实保留草稿额外的 Δ 因子，没有自行替换成除以 Δ 的差分公式。",
-        "- 原版沿用 partial 重计算；当前 FM CUDA 保存全部状态供反向使用。因此训练显存与速度反映当前实现，不能直接解释为算法固有复杂度优势。",
-        "- 图片保留全图，缩放至正方形并归一化，不裁剪、不做数据增强；类别标签为该图所有标注类别的并集，包含 crowd。图片预先解码到 CPU 缓存，训练计时包含 batch 准备和 H2D，不包含首次磁盘解码。", "",
-        "## 训练结果", "", "| 模型 | 参数数 | 最终验证 BCE | 子集 mAP | 每步 ms | 峰值显存 MiB |", "|---|---:|---:|---:|---:|---:|"]
+    lines = ["# Mamba2D / FM-Mamba: historical seven-group pilot", "", "Status: all seven groups completed; log audit passed.", "",
+        f"This run used {config['train_samples']} training images and {config['val_samples']} validation images from local COCO 2017 data. Each group trained for {config['steps']} steps with batch size {config['batch_size']}, {config['resolution']} x {config['resolution']} inputs, and FP32.",
+        "This small-data pilot checks workflow and performance on subsets selected for class coverage. Reported mAP is mean image-level multilabel AP. Accuracy results describe this short, single-seed run.", "",
+        "## Comparison setup", "",
+        "- The original M2D-T backbone is the baseline. All groups use an 80-class output layer and BCEWithLogitsLoss, with matching settings for the remaining layers, stochastic depth, and head dropout.",
+        "- All models are randomly initialized. SHA-256 checks verify identical shared outer weights, step projections, and initial C and D values. Data, sample order, training seed, and AdamW settings are shared: fixed learning rate 1e-4, weight decay 0.05, and gradient clipping at 1.0. EMA, CutMix, gradient accumulation, and learning-rate scheduling are disabled.",
+        "- In this historical pilot, FM local input follows Equation 42 and multidirectional input follows Equation 21. Both use the first-order input coefficients from the corresponding draft revision.",
+        "- For k=1...16, all three conditions use A1=A2=-k, with A0 equal to -k, -k^2, and -2.5k^2, respectively. FM uses fixed A coefficients; the original model learns A. The historical condition III protocol caps both step sizes at 0.99*ln(5)/16, approximately 0.099584.",
+        "- Local-input B0(x) varies with position and input. In the historical multidirectional implementation, B1/B2 are position-independent trainable 16-dimensional vectors per channel. The injection is delta1*delta2*[B1*delta2*(x-x_above)+B2*delta1*(x-x_left)]. Inputs and states outside the boundary are zero; coefficients are evaluated at the current position. This historical formula retains the draft's additional delta factors.",
+        "- The original model uses partial recomputation; the pilot FM CUDA implementation retains all forward states for backward propagation. Training memory and speed measurements characterize these execution policies.",
+        "- Full images are resized to squares and normalized, with cropping and augmentation disabled. Labels are the union of all annotated categories, including crowd annotations. Images are decoded into a CPU cache before timing; training timings cover batch preparation and host-to-device transfer.", "",
+        "## Training results", "", "| Model | Parameters | Final validation BCE | Subset mAP | ms/step | Peak memory MiB |", "|---|---:|---:|---:|---:|---:|"]
     for r in comparison:
         lines.append(f"| {LABELS[r['variant']]} | {r['parameters']:,} | {r['final_val_loss']:.5f} | {100*r['final_subset_map']:.2f}% | {r['mean_train_step_ms']:.2f} | {r['peak_train_allocated_mib']:.1f} |")
-    lines += ["", "训练步长计时包含梯度范数采集、裁剪、优化器和同步；验证、日志写盘及 checkpoint 单列在资源日志中。显存是本进程 PyTorch 分配峰值；NVML 的显存/功率/利用率是整张 GPU 的数据。功耗积分为采样估计，包含桌面或其他进程的 GPU 活动。", "",
-        "![loss 与验证指标](plots/loss_and_validation.png)", "", "![训练资源](plots/training_resources.png)", "",
-        "## 推理结果", "", f"下表为 FP32；输入已在 GPU。p50/p95/p99、逐次样本、重复轮次、吞吐、显存以及 BF16 数据均见 {inference_directory}/summary.csv 和 samples.csv。精确计时期间关闭本脚本的资源采样，资源数据在单独的测量中采集。", "",
-        "| 模型 | 分辨率 | batch | p50 ms | p95 ms | 持续吞吐 张/秒 | 峰值 MiB |", "|---|---:|---:|---:|---:|---:|---:|"]
+    lines += ["", "Training-step timings include gradient-norm collection, clipping, optimizer updates, and synchronization. Validation, log writes, and checkpoints have separate resource-log phases. Memory is the process-level peak PyTorch allocation. NVML memory, power, and utilization cover the whole GPU. Energy is estimated from sampled power, including desktop and other GPU activity.", "",
+        "![Loss and validation metrics](plots/loss_and_validation.png)", "", "![Training resources](plots/training_resources.png)", "",
+        "## Inference results", "", f"The table uses FP32 with inputs already on the GPU. p50/p95/p99, individual samples, repeated rounds, throughput, memory, and BF16 measurements are saved in {inference_directory}/summary.csv and samples.csv. Resource sampling runs separately from the primary timing measurements.", "",
+        "| Model | Resolution | Batch | p50 ms | p95 ms | Sustained images/s | Peak MiB |", "|---|---:|---:|---:|---:|---:|---:|"]
     for r in inference:
         if r["precision"] == "fp32":
             lines.append(f"| {LABELS[r['variant']]} | {r['resolution']} | {r['batch_size']} | {r['p50_ms']:.3f} | {r['p95_ms']:.3f} | {r['sustained_images_per_s']:.1f} | {r['peak_allocated_mib']:.1f} |")
-    lines += ["", "推理按随机模型顺序重复测量。CUDA event 是整个时间跨度，可能包含 CPU 提交造成的空闲，不等同于 kernel 执行时间之和。BF16 下原版扫描使用 BF16、FM 扫描保留 FP32，所以 BF16 仅作为各实现运行模式的补充记录。端到端指标另含 JPEG 解码、预处理及 H2D，重复读图通常命中系统缓存。", "",
-        "![推理延迟](plots/inference_latency.png)", "", "## 文件索引与通过条件", "",
-        "- audit.json：七组训练步数、逐步 CSV/JSONL、验证记录、资源采样、严格重载、样本顺序与共享初始化检查。",
-        "- dataset_manifest.json / sample_schedule.json：样本路径、图片 SHA-256、类别映射、预处理后张量哈希与每一步样本索引。",
-        "- 各模型目录 train.csv / steps.jsonl：每步 loss、学习率、梯度范数、CPU batch 准备、H2D、前向、反向、优化器时间、吞吐和显存。",
-        "- 各模型目录 resources.csv：约每 0.2 秒记录 CPU/RAM、GPU 利用率、设备显存、功率、温度、时钟；不支持的字段记为空值。",
-        "- 各模型目录 validation.json：验证 BCE、mAP、微平均 P/R/F1、宏平均 F1、逐类 AP 和样本数。",
-        "- 各模型目录 step_diagnostics.json：固定诊断小批次上 6 个 FM 模块的步长范围、截断比例和冻结系数条件检查；不代表全数据/空间变化系统的稳定性证明。",
-        "- 各模型目录 gradient_probes.json：逐个扫描参数的梯度是否存在、是否有限，以及裁剪后的范数。",
-        "- 各模型目录 checkpoint.pt / best_weights.pt：最后一步含优化器和 RNG 状态的 checkpoint、短程中验证 BCE 最低的权重；推理比较一律使用最后一步。",
-        "- source_snapshot / packages.txt / git-diff.patch / manifest.json：源代码快照、依赖版本、Git 状态、机器环境与运行顺序。",
-        "- plots 中同时保存 PNG 和 SVG，可进一步用于整理实验记录。", "",
-        "复跑：在 repo 中运行 `.\\run.ps1 run_comparison.py --config configs/fm-seven-pilot.json`。每次创建新输出目录；正式训练仍需另定数据规模、轮数与多随机种子方案。", ""]
+    lines += ["", "Inference measurements use repeated rounds with randomized model order. CUDA event spans include any idle time caused by CPU submission. Under BF16 autocast, the original scan uses BF16 while FM retains FP32; these measurements record each implementation's execution mode. End-to-end measurements also include JPEG decoding, preprocessing, and host-to-device transfer. Repeated reads generally use the system cache.", "",
+        "![Inference latency](plots/inference_latency.png)", "", "## File index and audit checks", "",
+        "- audit.json: training-step counts, per-step CSV/JSONL logs, validation records, resource samples, strict reload, sample order, and shared-initialization checks for all seven groups.",
+        "- dataset_manifest.json / sample_schedule.json: image paths, image SHA-256 values, category mappings, preprocessed tensor hashes, and per-step sample indices.",
+        "- Per-model train.csv / steps.jsonl: loss, learning rate, gradient norms, CPU batch preparation, host-to-device transfer, forward/backward/optimizer timings, throughput, and memory for every step.",
+        "- Per-model resources.csv: CPU/RAM, GPU utilization, device memory, power, temperature, and clocks sampled approximately every 0.2 seconds; unsupported fields are empty.",
+        "- Per-model validation.json: validation BCE, mAP, micro precision/recall/F1, macro F1, per-class AP, and sample counts.",
+        "- Per-model step_diagnostics.json: step-size ranges, clipping fractions, and frozen-coefficient condition checks for six FM modules on a fixed diagnostic minibatch.",
+        "- Per-model gradient_probes.json: gradient availability, finiteness, and post-clipping norms for each scan parameter.",
+        "- Per-model checkpoint.pt / best_weights.pt: the final-step checkpoint with optimizer and RNG state, and weights with the lowest pilot validation BCE. Inference comparisons use the final-step checkpoint.",
+        "- source_snapshot / packages.txt / git-diff.patch / manifest.json: source snapshots, dependency versions, Git state, machine environment, and execution order.",
+        "- plots: PNG and SVG figures for the experiment record.", "",
+        "Historical pilot command: `.\\run.ps1 run_comparison.py --config configs/fm-seven-pilot.json` in the original research workspace. Each run creates a new output directory. Dataset size, epoch budget, and seed repetitions are configured separately for full experiments.", ""]
     ablation_path = root/"monitor-ablation/result.json"
     if ablation_path.exists():
         ablation = read_json(ablation_path)["summary"]
-        lines += ["## 计时方法复核", "",
-            "首轮同时进行 NVML/CPU 资源采样和推理计时，观察到明显长尾。随后用同样权重、输入，对原版和 FM 工况 1 单一输入做 3 轮交替开关采样的对照，每种状态 180 次计时，结果如下。", "",
-            "| 模型 | 资源采样 | p50 ms | p95 ms |", "|---|---|---:|---:|"]
+        lines += ["## Timing-method review", "",
+            "The first pass combined NVML/CPU resource sampling with inference timing and showed substantial latency tails. A follow-up used identical weights and inputs for the original model and FM condition I with local input, alternating monitoring on and off for three rounds with 180 timing samples per state.", "",
+            "| Model | Resource sampling | p50 ms | p95 ms |", "|---|---|---:|---:|"]
         for row in ablation:
-            lines.append(f"| {LABELS[row['variant']]} | {'开启' if row['monitor_enabled'] else '关闭'} | {row['p50_ms']:.3f} | {row['p95_ms']:.3f} |")
-        lines += ["", "这说明本机资源采样会明显影响尾部延迟。因此上述主推理结果采用重新测得的独立计时数据；原始带采样数据保留在 inference 目录，开关对照保留在 monitor-ablation 目录。训练资源数据仍属于带监测、梯度检查和裁剪的实际训练流程计时，不当作无监测的纯计算时间。", ""]
-    (root/"REPORT.zh-CN.md").write_text("\n".join(lines), encoding="utf-8")
-    return root/"REPORT.zh-CN.md"
+            lines.append(f"| {LABELS[row['variant']]} | {'Enabled' if row['monitor_enabled'] else 'Disabled'} | {row['p50_ms']:.3f} | {row['p95_ms']:.3f} |")
+        lines += ["", "Resource sampling affected tail latency on this machine. The primary inference results therefore use the separately repeated timing pass. Original monitored measurements remain in inference, and monitoring ablations remain in monitor-ablation. Training measurements cover the instrumented workflow, including monitoring, gradient checks, and clipping.", ""]
+    (root/"REPORT.md").write_text("\n".join(lines), encoding="utf-8")
+    return root/"REPORT.md"
 
 
 if __name__ == "__main__":

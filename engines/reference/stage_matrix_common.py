@@ -78,27 +78,27 @@ def status(root):
     write(root / 'status.json', value)
     esc = html.escape
     lines = ['<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">',
-             '<title>FM-Mamba：三种结构 × 九组实验</title>',
+             '<title>FM-Mamba: three architectures x nine variants</title>',
              '<style>body{font:16px/1.6 system-ui;margin:32px;color:#172033;background:#f5f7fb}'
              'table{border-collapse:collapse;width:100%;background:white}th,td{padding:9px 12px;border-bottom:1px solid #ddd;text-align:right}'
              'th:first-child,td:first-child{text-align:left}th{background:#e4ebf4}small{color:#556}a{color:#2563a7}</style>',
-             '<h1>三种结构 × 九组实验</h1>',
-             f'<p>{"短程流程验证" if manifest["pilot"] else "正式训练"} · 每组 {manifest["target_epochs"]} 轮 · '
-             f'状态：{esc(queue["status"])} · 更新：{esc(value["updated"])}</p>',
-             '<p>2M2A / 3M1A / 4M0A 分别含 6 / 15 / 18 个 Mamba 块。工况 3 默认上限为 0.99 ln(5)/16，'
-             'cap090 两组为 0.90 ln(5)/16。共享初始化在同一结构内逐项核对；跨结构采用同一随机种子。</p>',
-             '<p>结构修订：前两阶段保留各组原有扫描及并联局部分支；第三阶段或第三、四阶段采用 '
-             'Linear → DWConv3 → SiLU → 对应扫描核心 → LayerNorm → Linear，线性层和卷积均无偏置。</p>',
-             '<p>COCO 80 类图片多标签分类；35 轮实验保留原 40 轮学习率计划。历史 7 组复用；新增 20 组从头训练。'
-             '验证指标不代表检测 AP。单种子结果不能估计种子间波动。推理会在训练结束后统一重测 27 组最佳权重。</p>',
-             '<table><thead><tr><th>实验</th><th>来源</th><th>轮数</th><th>步数</th><th>最佳轮</th><th>mAP %</th>'
-             '<th>micro-F1 %</th><th>macro-F1 %</th><th>参数 M</th></tr></thead><tbody>']
+             '<h1>Three architectures x nine variants</h1>',
+             f'<p>{"Short workflow validation" if manifest["pilot"] else "Full training"} · {manifest["target_epochs"]} epochs per group · '
+             f'Status: {esc(queue["status"])} · Updated: {esc(value["updated"])}</p>',
+             '<p>2M2A / 3M1A / 4M0A contain 6 / 15 / 18 Mamba blocks, respectively. In this historical matrix, condition III uses a default cap of 0.99 ln(5)/16; '
+             'the two cap090 variants use 0.90 ln(5)/16. Shared initialization is checked within each architecture; all architectures use the same random seed.</p>',
+             '<p>Architecture revision: the first two stages retain each group\'s scan and parallel local branch. Stage 3, or stages 3 and 4, use '
+             'Linear → DWConv3 → SiLU → scan core → LayerNorm → Linear, with bias-free linear and convolution layers.</p>',
+             '<p>COCO 80-class image-level multilabel classification. The 35-epoch runs retain the original 40-epoch learning-rate schedule. Seven historical runs are reused; 20 additional runs start from scratch. '
+             'The table reports classification metrics from one seed. The best checkpoints from all 27 groups are benchmarked after training.</p>',
+             '<table><thead><tr><th>Experiment</th><th>Source</th><th>Epochs</th><th>Steps</th><th>Best epoch</th><th>mAP %</th>'
+             '<th>micro-F1 %</th><th>macro-F1 %</th><th>Parameters M</th></tr></thead><tbody>']
     fmt = lambda v, scale=1: '—' if v is None else f'{v * scale:.3f}'
     for row in rows:
-        lines.append('<tr><td>' + esc(row['id']) + '</td><td>' + ('复用' if row['reuse'] else '新增') + '</td>'
+        lines.append('<tr><td>' + esc(row['id']) + '</td><td>' + ('Reused' if row['reuse'] else 'New') + '</td>'
                      f'<td>{row["epochs_completed"]}</td><td>{row["step"]}</td><td>{row["best_epoch"] or "—"}</td>'
                      f'<td>{fmt(row["best_map"], 100)}</td><td>{fmt(row["best_micro_f1"], 100)}</td>'
                      f'<td>{fmt(row["best_macro_f1"], 100)}</td><td>{fmt(row["parameters"], 1e-6)}</td></tr>')
-    lines += ['</tbody></table>', '<p><small>各组轮数未齐时，表中阶段性指标仅用于观察进度；训练耗时、显存、功耗和逐批日志保存在各组目录。</small></p>']
+    lines += ['</tbody></table>', '<p><small>Interim metrics track progress while epoch counts differ across groups. Each group directory stores training times, memory, power, and per-batch logs.</small></p>']
     (root / 'STATUS.html').write_text('\n'.join(lines), encoding='utf-8')
     return value

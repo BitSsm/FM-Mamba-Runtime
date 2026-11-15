@@ -4,7 +4,7 @@ Vim uses the pinned official BiMamba-v2 initializer. Its fused inner function
 is expressed as the same convolution, projections, CUDA scan and SiLU gate.
 SS2D follows VMamba-T's v05_noz operator; 2DMamba changes its scan kernel only.
 These are hybrid-backbone experiments, not reproductions of the original
-full Vim/VMamba/2DVMamba image classifiers. See EXTERNAL_BASELINES.zh-CN.md.
+full Vim/VMamba/2DVMamba image classifiers. See configs/groups.json for group definitions.
 """
 from functools import lru_cache
 import importlib.util
