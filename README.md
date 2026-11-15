@@ -17,7 +17,7 @@ gh release download v0.1.0 --repo BitSsm/FM-Mamba-Runtime --pattern "*.whl" --pa
 .\run.ps1 experiments.py smoke --group fm_pcd_c2
 ```
 
-The repository is private. Authenticate `gh` with an account that has repository access. Wheel versions and checksums are included in each release.
+Wheel versions and checksums are included in each release.
 
 After installation, `.\run.ps1 tools/verify_runtime.py` checks forward execution for all 14 groups. `.\run.ps1 tools/short_check.py --data-root D:/datasets/coco2017` runs a short training, resume, evaluation, and benchmark cycle for PCD condition II.
 
